@@ -1,5 +1,13 @@
-import React from "react";
-import { View, Text, StyleSheet, Platform, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 function Header() {
@@ -10,20 +18,62 @@ function Header() {
   );
 }
 
-function Body() {
+function Body({ navigation }) {
   return (
-    <View style={styles.body}>
-      <Text style={styles.bodyText}>Welcome to VG Leaders App!</Text>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>ATTENDANCE</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>TOOLS</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>SETTINGS</Text>
-      </TouchableOpacity>
-    </View>
+    <ScrollView
+      contentContainerStyle={[
+        styles.body,
+        {
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          flexGrow: 1,
+        },
+      ]}
+    >
+      <View style={styles.segment}>
+        <View style={styles.bodyRow}>
+          <TouchableOpacity
+            style={{ width: "100%", height: "100%" }}
+            onPress={() => {
+              console.log("Attendance button pressed");
+              navigation && navigation.navigate("Login");
+            }}
+          >
+            <Image
+              source={require("./assets/attendance.png")}
+              style={styles.buttonImage}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.bodyRow}>
+          <TouchableOpacity
+            style={{ width: "100%", height: "100%" }}
+            onPress={() => {
+              /* TODO: handle tools button press */
+            }}
+          >
+            <Image
+              source={require("./assets/tools.png")}
+              style={styles.buttonImage}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.bodyRow}>
+          <TouchableOpacity
+            style={{ width: "100%", height: "100%" }}
+            onPress={() => {
+              /* TODO: handle settings button press */
+            }}
+          >
+            <Image
+              source={require("./assets/settings.png")}
+              style={styles.buttonImage}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -37,24 +87,47 @@ function Footer() {
   );
 }
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Header />
-      <Body />
+      <Body navigation={navigation} />
       <Footer />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  bodyRow: {
+    width: "100%",
+    height: 140,
+    backgroundColor: "#e0e0e0",
+    marginVertical: 0,
+    borderRadius: 0,
+    padding: 0,
+  },
+  segment: {
+    backgroundColor: "#fff",
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 0,
+    marginTop: 0,
+    marginBottom: 0,
+  },
+  buttonImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
     flexDirection: "column",
   },
   header: {
-    height: 80,
+    height: 120,
     backgroundColor: "#4F8EF7",
     alignItems: "flex-start",
     justifyContent: "center",
@@ -70,31 +143,7 @@ const styles = StyleSheet.create({
   body: {
     flex: 1,
     justifyContent: "center",
-    paddingHorizontal: 24,
-  },
-  bodyText: {
-    fontSize: 18,
-    color: "#333",
-    fontFamily: Platform.select({
-      ios: 'Arial Rounded MT Bold',
-      android: 'sans-serif',
-      default: 'Arial',
-    }),
-    marginBottom: 32,
-  },
-  button: {
-    backgroundColor: '#4F8EF7',
-    paddingVertical: 14,
-    borderRadius: 8,
-    marginVertical: 8,
-    width: '100%',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    letterSpacing: 1,
+    paddingHorizontal: 0,
   },
   footerContainer: {
     // No absolute positioning, let flexbox handle stacking
@@ -105,10 +154,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
-  },
-  footerText: {
-    color: "#888",
-    fontSize: 16,
   },
   footerBy: {
     color: "#888",
