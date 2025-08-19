@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import homeIcon from "./assets/home.png";
+import bibleIcon from "./assets/bible.png";
+import eventsIcon from "./assets/events.png";
+import prayerIcon from "./assets/prayer.png";
 import {
   View,
   Text,
@@ -9,6 +13,7 @@ import {
   ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import NavBar from "./NavBar";
 
 function Header() {
   return (
@@ -31,7 +36,12 @@ function Body({ navigation }) {
         },
       ]}
     >
-      <View style={styles.segment}>
+      <View
+        style={[
+          styles.segment,
+          { height: 80, paddingVertical: 0, justifyContent: "center" },
+        ]}
+      >
         <View style={styles.bodyRow}>
           <TouchableOpacity
             style={{ width: "100%", height: "100%" }}
@@ -91,7 +101,14 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Header />
-      <Body navigation={navigation} />
+      <View style={{ flex: 1, width: "100%" }}>
+        <View style={{ flex: 8 }}>
+          <Body navigation={navigation} />
+        </View>
+        <View style={{ flex: 2, justifyContent: "flex-end" }}>
+          <NavBar navigation={navigation} />
+        </View>
+      </View>
       <Footer />
     </View>
   );

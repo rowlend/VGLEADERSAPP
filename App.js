@@ -7,7 +7,7 @@ import LoginScreen from "./LoginScreen";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const AttendanceHomeScreen = require('./AttendanceHomeScreen').default;
+  const AttendanceHomeScreen = require("./AttendanceHomeScreen").default;
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">

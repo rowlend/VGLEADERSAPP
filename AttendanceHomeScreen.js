@@ -1,11 +1,23 @@
 import React from "react";
-import { View, Text, StyleSheet, ActivityIndicator, Dimensions } from "react-native";
-import { useRoute } from '@react-navigation/native';
+import NavBar from "./NavBar";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 export default function AttendanceHomeScreen() {
+  const navigation = useNavigation();
   const route = useRoute();
-  const userId = route.params?.userId || '';
-  const [name, setName] = React.useState('');
+  const userId = route.params?.userId || "";
+  const [name, setName] = React.useState("");
   const [loading, setLoading] = React.useState(true);
   const API_KEY = "AIzaSyDLB1EfUATYqnSiih6rO_FM35RZ969E7wY";
   const SHEET_ID = "1BBt7DO0m5PA7EAJ8aZy9ZqldF22N975dm0Hv3KinsYA";
@@ -21,21 +33,23 @@ export default function AttendanceHomeScreen() {
         if (data && data.values && data.values.length > 0) {
           const rows = data.values;
           // Try to detect if first row is header
-          const hasHeader = rows[0][0].toLowerCase().includes("leader") || rows[0][1].toLowerCase().includes("first");
+          const hasHeader =
+            rows[0][0].toLowerCase().includes("leader") ||
+            rows[0][1].toLowerCase().includes("first");
           const userRows = hasHeader ? rows.slice(1) : rows;
-          const found = userRows.find(row => row[0] === userId);
+          const found = userRows.find((row) => row[0] === userId);
           if (found) {
             // Column B + ' ' + Column D
-            const fullName = `${found[1] || ''} ${found[3] || ''}`.trim();
+            const fullName = `${found[1] || ""} ${found[3] || ""}`.trim();
             setName(fullName);
           } else {
-            setName('Not found');
+            setName("Not found");
           }
         } else {
-          setName('Not found');
+          setName("Not found");
         }
       } catch (e) {
-        setName('Error');
+        setName("Error");
       } finally {
         setLoading(false);
       }
@@ -44,40 +58,178 @@ export default function AttendanceHomeScreen() {
   }, [userId]);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.segment}>
-        <Text style={styles.welcome}>Welcome</Text>
-        <Text style={styles.leaderId}>Leader ID: {userId}</Text>
-        <Text style={styles.nameLabel}>
-          Name: <Text style={{fontWeight: 'bold'}}>{loading ? <ActivityIndicator size="small" color="#4F8EF7" /> : name}</Text>
-        </Text>
+    <>
+      <SafeAreaView
+        style={{ flex: 1, alignItems: "center", paddingTop: 0 }}
+        edges={["top"]}
+      >
+        {/* Add marginTop to move the body higher */}
+        <View
+          style={{
+            flex: 2, // 30% of available space
+            alignItems: "center",
+            justifyContent: "flex-start",
+            height: "100%",
+            width: "100%",
+            marginTop: 0,
+            paddingTop: 0,
+          }}
+        >
+          <View
+            style={[
+              styles.segment,
+              {
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 0,
+              },
+            ]}
+          >
+            {/* Removed the Welcome text */}
+            <Text
+              style={[
+                styles.leaderId,
+                {
+                  flexShrink: 2,
+                  flexWrap: "wrap",
+                  textAlign: "left",
+                  width: "100%",
+                },
+              ]}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              Leader ID: {userId}
+            </Text>
+            <Text
+              style={[
+                styles.nameLabel,
+                {
+                  flexShrink: 2,
+                  flexWrap: "wrap",
+                  textAlign: "left",
+                  width: "100%",
+                },
+              ]}
+              numberOfLines={2}
+              adjustsFontSizeToFit
+            >
+              Name:{" "}
+              <Text style={{ fontWeight: "bold" }}>
+                {loading ? (
+                  <ActivityIndicator size="small" color="#4F8EF7" />
+                ) : (
+                  name
+                )}
+              </Text>
+            </Text>
+          </View>
+        </View>
+        {/* Segment 2: Main buttons */}
+        <View
+          style={{
+            flex: 8, // 70% of available space
+            alignItems: "center",
+            width: "100%",
+            padding: 0,
+            margin: 0,
+          }}
+        >
+          <ScrollView
+            contentContainerStyle={{
+              alignItems: "center",
+              flexGrow: 1,
+              width: "100%",
+            }}
+          >
+            <View style={[styles.tableCol, { alignItems: "center" }]}>
+              <View style={styles.tableCell}>
+                <TouchableOpacity
+                  onPress={() => {
+                    /* TODO: handle submit */
+                  }}
+                  style={{ width: "100%", height: "100%" }}
+                >
+                  <Image
+                    source={require("./assets/SUBMIT.png")}
+                    style={{ width: "100%", height: "100%" }}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.tableCell}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("PassedAttendanceScreen");
+                  }}
+                  style={{ width: "100%", height: "100%" }}
+                >
+                  <Image
+                    source={require("./assets/LOGS.png")}
+                    style={{ width: "100%", height: "100%" }}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.tableCell}>
+                <TouchableOpacity
+                  onPress={() => {
+                    /* TODO: handle add member */
+                  }}
+                  style={{ width: "100%", height: "100%" }}
+                >
+                  <Image
+                    source={require("./assets/ADDMEMBER.png")}
+                    style={{ width: "100%", height: "100%" }}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+      </SafeAreaView>
+      {/* NavBar is now directly above the footer */}
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: 70,
+          backgroundColor: "#fff",
+          padding: 0,
+          margin: 0,
+        }}
+      >
+        <NavBar navigation={navigation} />
       </View>
-      <Text style={styles.title}>Attendance Home</Text>
-      {/* 1x3 Table */}
-      <View style={styles.tableCol}>
-  <View style={styles.tableCell}><Text style={styles.tableCellText}>Submit</Text></View>
-  <View style={styles.tableCell}><Text style={styles.tableCellText}>Logs</Text></View>
-  <View style={styles.tableCell}><Text style={styles.tableCellText}>Add Member</Text></View>
-      </View>
-    </View>
+      {/* Footer with height 10px */}
+      <View
+        style={{
+          width: "100%",
+          height: 45,
+          backgroundColor: "#ffffff",
+        }}
+      />
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   segment: {
-    width: '100%',
+    width: "100%",
     maxWidth: 340,
-    backgroundColor: '#22336B', // dark blue from blue palette
+    backgroundColor: "#22336B", // dark blue from blue palette
     borderRadius: 16,
     padding: 24,
-    shadowColor: '#000',
+    marginBottom: 16,
+    marginTop: 13, // reduced from 16 to 13 to decrease gray space by 3px
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 3,
-    alignItems: 'flex-start',
-    marginBottom: 24,
-    marginTop: 24, // right below header
+    alignItems: "flex-start",
   },
 
   container: {
@@ -91,19 +243,20 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "600",
     color: "#fff",
+    marginTop: 3,
     marginBottom: 12,
   },
   leaderId: {
     fontSize: 18,
-    color: '#fff',
+    color: "#fff",
     marginBottom: 4,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   nameLabel: {
     fontSize: 16,
-    color: '#fff',
+    color: "#fff",
     marginBottom: 12,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   title: {
     fontSize: 28,
@@ -111,26 +264,55 @@ const styles = StyleSheet.create({
     color: "#4F8EF7",
   },
   tableCol: {
-    flexDirection: 'column',
-    width: Dimensions.get('window').width,
-    alignSelf: 'center',
-    height: 420,
-    marginTop: 24,
-    marginBottom: 24,
+    flexDirection: "column",
+    width: Dimensions.get("window").width,
+    alignSelf: "center",
+    marginTop: 12, // was 24
+    marginBottom: 12, // was 24
   },
   tableCell: {
-    width: '100%',
-    backgroundColor: '#e0e0e0',
-    marginHorizontal: 4,
-  borderRadius: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    backgroundColor: "transparent",
+    borderRadius: 0,
+    justifyContent: "center",
+    alignItems: "center",
     height: 140,
   },
   tableCellText: {
-    color: '#22336B',
-    fontWeight: 'bold',
+    color: "#22336B",
+    fontWeight: "bold",
     fontSize: 18,
   },
-
+  tableImage: {
+    width: "100%",
+    height: "100%",
+  },
+  tableScrollView: {
+    flex: 1,
+    width: "100%",
+  },
+  submitButtonCell: {
+    width: "100%",
+    backgroundColor: "transparent",
+    borderRadius: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 140,
+  },
+  submitButton: {
+    width: 340,
+    backgroundColor: "#22336B",
+    borderRadius: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  submitImage: {
+    width: "100%",
+    height: "100%",
+  },
 });
