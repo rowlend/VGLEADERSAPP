@@ -18,7 +18,7 @@ export default function NavBar() {
             style={styles.navIconLarge}
             resizeMode="contain"
           />
-          <Text style={styles.navLabel}>home</Text>
+          <Text style={styles.navLabelHome}>home</Text>
         </TouchableOpacity>
         {/* Nav 2: Bible */}
         <TouchableOpacity
@@ -30,7 +30,7 @@ export default function NavBar() {
             style={styles.navIconLarge}
             resizeMode="contain"
           />
-          <Text style={styles.navLabel}>bible</Text>
+          <Text style={styles.navLabelBible}>bible</Text>
         </TouchableOpacity>
         {/* Nav 3: Events */}
         <TouchableOpacity
@@ -42,7 +42,7 @@ export default function NavBar() {
             style={styles.navIconLarge}
             resizeMode="contain"
           />
-          <Text style={styles.navLabel}>events</Text>
+          <Text style={styles.navLabelEvents}>events</Text>
         </TouchableOpacity>
         {/* Nav 4: Prayer */}
         <TouchableOpacity
@@ -54,7 +54,7 @@ export default function NavBar() {
             style={styles.navIconLarge}
             resizeMode="contain"
           />
-          <Text style={styles.navLabel}>prayer</Text>
+          <Text style={styles.navLabelPrayer}>prayer</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -93,11 +93,39 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
   },
+  navLabelHome: {
+    fontSize: 9,
+    color: "#22336B",
+    marginTop: 2,
+    fontFamily: "Arial",
+    fontWeight: "bold", // Home label is bold
+  },
   navLabel: {
     fontSize: 9,
-    color: "#22336B", // or "#333" for dark gray
+    color: "#22336B",
     marginTop: 2,
     fontFamily: "Arial",
     fontWeight: "normal",
+  },
+  navLabelBible: {
+    fontSize: 9,
+    color: "#22336B",
+    marginTop: 2,
+    fontFamily: "Arial",
+    fontWeight: "bold", // Bible label is bold
+  },
+  navLabelEvents: {
+    fontSize: 9,
+    color: "#22336B",
+    marginTop: 2,
+    fontFamily: "Arial",
+    fontWeight: "bold", // Events label is bold
+  },
+  navLabelPrayer: {
+    fontSize: 9,
+    color: "#22336B",
+    marginTop: 2,
+    fontFamily: "Arial",
+    fontWeight: "bold", // Prayer label is bold
   },
 });

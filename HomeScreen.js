@@ -19,6 +19,10 @@ function Header() {
   return (
     <View style={styles.header}>
       <Text style={styles.headerText}>VG Leaders App</Text>
+      <Image
+        source={require("./assets/VictoryLogo_White.png")}
+        style={styles.headerLogo}
+      />
     </View>
   );
 }
@@ -145,17 +149,25 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 120,
-    backgroundColor: "#4F8EF7",
-    alignItems: "flex-start",
-    justifyContent: "center",
+    backgroundColor: "#22336B",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
     paddingTop: 30,
     flexShrink: 0,
     paddingLeft: 24,
+    paddingRight: 24,
   },
   headerText: {
     color: "#fff",
     fontSize: 22,
     fontWeight: "bold",
+    lineHeight: 48, // Add this line to vertically align with the logo
+  },
+  headerLogo: {
+    width: 48,
+    height: 48,
+    resizeMode: "contain",
   },
   body: {
     flex: 1,

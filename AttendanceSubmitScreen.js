@@ -1,11 +1,12 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-export default function PassedAttendanceScreen() {
+export default function AttendanceSubmitScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Passed Attendance</Text>
-      {/* Add your content here */}
+      <Text style={styles.title}>Submit Attendance</Text>
+      <Text style={styles.title}>under construction!</Text>
+      {/* Add your submit form or content here */}
     </View>
   );
 }

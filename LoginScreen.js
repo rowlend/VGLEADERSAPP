@@ -7,13 +7,18 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Image,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+export let xUserID = ""; // <-- Added universal variable
 
 export default function LoginScreen() {
+  const navigation = useNavigation();
   const [showPassword, setShowPassword] = React.useState(false);
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [isConnected, setIsConnected] = React.useState(null); // null = unknown, true = connected, false = not connected
+  const [isConnected, setIsConnected] = React.useState(null);
   const [checking, setChecking] = React.useState(false);
 
   // Google Sheets API details
@@ -41,17 +46,23 @@ export default function LoginScreen() {
     testConnection();
   }, []);
 
-  const navigation = require("@react-navigation/native").useNavigation();
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Image
+          source={require("./assets/VictoryLogo_Blue.png")} // <-- Updated filename
+          style={styles.logo}
+        />
+        <Text style={styles.headerText}>Victory</Text>
+      </View>
       <View style={styles.segment}>
-        <Text style={styles.title}>Login</Text>
         <TextInput
           style={styles.input}
           placeholder="Username"
           autoCapitalize="none"
           value={username}
           onChangeText={setUsername}
+          placeholderTextColor="#aaa"
         />
         <TextInput
           style={styles.input}
@@ -59,6 +70,7 @@ export default function LoginScreen() {
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}
+          placeholderTextColor="#aaa"
         />
         <View style={styles.checkboxRow}>
           <TouchableOpacity
@@ -79,16 +91,13 @@ export default function LoginScreen() {
         <TouchableOpacity
           style={styles.button}
           onPress={async () => {
-            // Fetch user data from Google Sheet and check credentials
             try {
               const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/VGLeadersApp!A:B?key=${API_KEY}`;
               const response = await fetch(url);
               if (!response.ok) throw new Error("Failed to fetch");
               const data = await response.json();
               if (data && data.values && data.values.length > 0) {
-                // Skip header if present, start from row 1 if row 0 is header
                 const rows = data.values;
-                // Try to detect if first row is header
                 const hasHeader =
                   rows[0][0].toLowerCase().includes("username") ||
                   rows[0][1].toLowerCase().includes("password");
@@ -97,10 +106,10 @@ export default function LoginScreen() {
                   (row) => row[0] === username && row[1] === password
                 );
                 if (found) {
-                  console.log(
-                    "Login successful, navigating to AttendanceHomeScreen"
-                  );
-                  navigation.navigate("AttendanceHome", { userId: username });
+                  xUserID = username; // <-- Set the universal variable
+                  navigation.navigate("AttendanceHomeScreen", {
+                    userId: username,
+                  });
                 } else {
                   Alert.alert("Invalid username or password");
                 }
@@ -118,7 +127,7 @@ export default function LoginScreen() {
       <View style={styles.statusRow}>
         <Text style={styles.statusText}>Status: </Text>
         {checking ? (
-          <ActivityIndicator size="small" color="#4F8EF7" />
+          <ActivityIndicator size="small" color="#22336B" />
         ) : (
           <View
             style={[
@@ -140,9 +149,88 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 0,
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  header: {
+    width: "100%",
+    backgroundColor: "#fffff",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 48,
+    paddingBottom: 0, // Changed from 24 to 0 to remove extra space below logo
+    marginBottom: 0, // Changed from 12 to 0 to remove margin below header
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: 0, // Ensure no margin below logo
+    padding: 0,
+    resizeMode: "contain",
+  },
+  headerText: {
+    color: "#fff",
+    fontSize: 22,
+    fontWeight: "bold",
+    letterSpacing: 1,
+    marginBottom: 2,
+  },
+  subHeaderText: {
+    color: "#fff",
+    fontSize: 15,
+    marginBottom: 4,
+    letterSpacing: 0.5,
+  },
+  segment: {
+    width: "90%",
+    maxWidth: 340,
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 1,
+    alignItems: "center",
+    marginTop: 0, // Ensure no margin above segment
+    minHeight: 260, // Add this line to make the segment higher
+  },
+  input: {
+    width: "100%",
+    height: 48,
+    borderColor: "#22336B",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    fontSize: 16,
+    backgroundColor: "#f9f9f9",
+    color: "#22336B",
+  },
+  button: {
+    width: "100%",
+    height: 48,
+    backgroundColor: "#22336B",
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    letterSpacing: 1,
+  },
   checkboxRow: {
     width: "100%",
-    maxWidth: 320,
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 8,
@@ -155,7 +243,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderWidth: 1,
-    borderColor: "#888",
+    borderColor: "#22336B",
     borderRadius: 4,
     marginRight: 8,
     justifyContent: "center",
@@ -163,8 +251,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   checkboxBoxChecked: {
-    backgroundColor: "#4F8EF7",
-    borderColor: "#4F8EF7",
+    backgroundColor: "#22336B",
+    borderColor: "#22336B",
   },
   checkboxTick: {
     width: 10,
@@ -174,7 +262,7 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     fontSize: 15,
-    color: "#333",
+    color: "#22336B",
   },
   statusRow: {
     flexDirection: "row",
@@ -183,7 +271,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 16,
-    color: "#333",
+    color: "#22336B",
     marginRight: 8,
   },
   statusLight: {
@@ -192,58 +280,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#ccc",
-  },
-  segment: {
-    width: "100%",
-    maxWidth: 340,
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 24,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
-    alignItems: "center",
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 24,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    marginBottom: 32,
-    color: "#4F8EF7",
-  },
-  input: {
-    width: "100%",
-    maxWidth: 320,
-    height: 48,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    marginBottom: 16,
-    fontSize: 16,
-    backgroundColor: "#f9f9f9",
-  },
-  button: {
-    width: "100%",
-    maxWidth: 320,
-    height: 48,
-    backgroundColor: "#4F8EF7",
-    borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 8,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });

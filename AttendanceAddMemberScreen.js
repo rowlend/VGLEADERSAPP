@@ -126,68 +126,7 @@ export default function AttendanceHomeScreen() {
           </View>
         </View>
         {/* Segment 2: Main buttons */}
-        <View
-          style={{
-            flex: 8, // 70% of available space
-            alignItems: "center",
-            width: "100%",
-            padding: 0,
-            margin: 0,
-          }}
-        >
-          <ScrollView
-            contentContainerStyle={{
-              alignItems: "center",
-              flexGrow: 1,
-              width: "100%",
-            }}
-          >
-            <View style={[styles.tableCol, { alignItems: "center" }]}>
-              <View style={styles.tableCell}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("AttendanceSubmitScreen"); // Navigate to AttendanceSubmitScreen
-                  }}
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  <Image
-                    source={require("./assets/SUBMIT.png")}
-                    style={{ width: "100%", height: "100%" }}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.tableCell}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("AttendanceLogsScreen"); // Use navigation from context
-                  }}
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  <Image
-                    source={require("./assets/LOGS.png")}
-                    style={{ width: "100%", height: "100%" }}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.tableCell}>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("AttendanceAddMemberScreen"); // Navigate to AttendanceAddMemberScreen
-                  }}
-                  style={{ width: "100%", height: "100%" }}
-                >
-                  <Image
-                    source={require("./assets/ADDMEMBER.png")}
-                    style={{ width: "100%", height: "100%" }}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
+        {/* Removed the entire main buttons segment */}
       </SafeAreaView>
       {/* NavBar is now directly above the footer */}
       <View
