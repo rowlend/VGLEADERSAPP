@@ -10,12 +10,13 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { xUserID } from "./LoginScreen";
-import { API_KEY, SHEET_ID } from "./config"; // <-- Add this import at the top
 
 export default function AttendanceAddMemberScreen() {
   const navigation = useNavigation();
   const [name, setName] = React.useState("");
   const [loading, setLoading] = React.useState(true);
+  const API_KEY = "AIzaSyDLB1EfUATYqnSiih6rO_FM35RZ969E7wY";
+  const SHEET_ID = "1BBt7DO0m5PA7EAJ8aZy9ZqldF22N975dm0Hv3KinsYA";
   const RANGE = "Data!A:D";
 
   React.useEffect(() => {

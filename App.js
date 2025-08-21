@@ -7,6 +7,7 @@ import AttendanceHomeScreen from "./AttendanceHomeScreen";
 import AttendanceLogsScreen from "./AttendanceLogsScreen";
 import AttendanceSubmitScreen from "./AttendanceSubmitScreen"; // Make sure this exists
 import AttendanceAddMemberScreen from "./AttendanceAddMemberScreen";
+import SelectVGAttendanceScreen from "./SelectVGAttendanceScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,11 @@ export default function App() {
           name="AttendanceAddMemberScreen"
           component={AttendanceAddMemberScreen}
           options={{ title: "Add VG Member" }}
+        />
+        <Stack.Screen
+          name="SelectVGAttendanceScreen"
+          component={SelectVGAttendanceScreen}
+          options={{ title: "Select Victory Group" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

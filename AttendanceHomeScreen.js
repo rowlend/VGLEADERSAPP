@@ -12,6 +12,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { xUserID } from "./LoginScreen";
+import { API_KEY, SHEET_ID } from "./config"; // <-- Add this import at the top
+import { xVGid } from "./SelectVGAttendanceScreen"; // Add this import if not present
 
 export default function AttendanceHomeScreen() {
   const navigation = useNavigation();
@@ -19,8 +22,6 @@ export default function AttendanceHomeScreen() {
   const userId = route.params?.userId || "";
   const [name, setName] = React.useState("");
   const [loading, setLoading] = React.useState(true);
-  const API_KEY = "AIzaSyDLB1EfUATYqnSiih6rO_FM35RZ969E7wY";
-  const SHEET_ID = "1BBt7DO0m5PA7EAJ8aZy9ZqldF22N975dm0Hv3KinsYA";
   const RANGE = "Data!A:D";
 
   React.useEffect(() => {
@@ -32,7 +33,6 @@ export default function AttendanceHomeScreen() {
         const data = await response.json();
         if (data && data.values && data.values.length > 0) {
           const rows = data.values;
-          // Try to detect if first row is header
           const hasHeader =
             rows[0][0].toLowerCase().includes("leader") ||
             rows[0][1].toLowerCase().includes("first");
@@ -146,7 +146,11 @@ export default function AttendanceHomeScreen() {
               <View style={styles.tableCell}>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("AttendanceSubmitScreen"); // Navigate to AttendanceSubmitScreen
+                    console.log(
+                      "Navigating to SelectVGAttendanceScreen, xVGid:",
+                      xVGid
+                    );
+                    navigation.navigate("SelectVGAttendanceScreen"); // Navigate to SelectVGAttendanceScreen
                   }}
                   style={{ width: "100%", height: "100%" }}
                 >

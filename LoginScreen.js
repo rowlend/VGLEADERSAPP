@@ -10,8 +10,10 @@ import {
   Image,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_KEY, SHEET_ID, CLIENT_KEY } from "./config"; // <-- Import CLIENT_KEY as well
 
-export let xUserID = ""; // <-- Added universal variable
+export let xUserID = ""; // <-- Universal variable
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -21,10 +23,17 @@ export default function LoginScreen() {
   const [isConnected, setIsConnected] = React.useState(null);
   const [checking, setChecking] = React.useState(false);
 
-  // Google Sheets API details
-  const API_KEY = "AIzaSyDLB1EfUATYqnSiih6rO_FM35RZ969E7wY";
-  const SHEET_ID = "1BBt7DO0m5PA7EAJ8aZy9ZqldF22N975dm0Hv3KinsYA";
   const RANGE = "VGLeadersApp!A1:A1";
+
+  // Load last username on mount
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const lastUsername = await AsyncStorage.getItem("lastUsername");
+        if (lastUsername) setUsername(lastUsername);
+      } catch (e) {}
+    })();
+  }, []);
 
   React.useEffect(() => {
     const testConnection = async () => {
@@ -50,7 +59,7 @@ export default function LoginScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={require("./assets/VictoryLogo_Blue.png")} // <-- Updated filename
+          source={require("./assets/VictoryLogo_Blue.png")}
           style={styles.logo}
         />
         <Text style={styles.headerText}>Victory</Text>
@@ -106,7 +115,8 @@ export default function LoginScreen() {
                   (row) => row[0] === username && row[1] === password
                 );
                 if (found) {
-                  xUserID = username; // <-- Set the universal variable
+                  xUserID = username;
+                  await AsyncStorage.setItem("lastUsername", username); // <-- Remember username
                   navigation.navigate("AttendanceHomeScreen", {
                     userId: username,
                   });
