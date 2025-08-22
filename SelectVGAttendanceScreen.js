@@ -167,7 +167,7 @@ export default function AttendanceAddMemberScreen() {
                 onPress={() => {
                   xVGid = row[0] || ""; // Set VGID (column A)
                   xVGName = row[1] || ""; // Set VG Name (column B only, no VGID)
-                  navigation.navigate("AttendanceSubmitScreen");
+                  navigation.navigate("AttendanceHomeScreen"); // <-- navigate to AttendanceHomeScreen
                 }}
               >
                 <Text style={styles.tableCell}>
@@ -273,13 +273,13 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   leaderId: {
-    fontSize: 18,
+    fontSize: 18, // Match AttendanceHomeScreen.js
     color: "#fff",
     marginBottom: 4,
     fontWeight: "bold",
   },
   nameLabel: {
-    fontSize: 16,
+    fontSize: 16, // Match AttendanceHomeScreen.js
     color: "#fff",
     marginBottom: 12,
     fontWeight: "bold",

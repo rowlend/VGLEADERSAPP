@@ -14,7 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { xUserID } from "./LoginScreen";
 import { API_KEY, SHEET_ID } from "./config"; // <-- Add this import at the top
-import { xVGid } from "./SelectVGAttendanceScreen"; // Add this import if not present
+import { xVGid, xFullName } from "./SelectVGAttendanceScreen"; // Add this import if not present
 
 export default function AttendanceHomeScreen() {
   const navigation = useNavigation();
@@ -99,7 +99,7 @@ export default function AttendanceHomeScreen() {
               numberOfLines={1}
               adjustsFontSizeToFit
             >
-              Leader ID: {userId}
+              Leader ID: <Text style={{ fontWeight: "bold" }}>{xUserID}</Text>
             </Text>
             <Text
               style={[
@@ -119,7 +119,7 @@ export default function AttendanceHomeScreen() {
                 {loading ? (
                   <ActivityIndicator size="small" color="#4F8EF7" />
                 ) : (
-                  name
+                  xFullName
                 )}
               </Text>
             </Text>
@@ -146,11 +146,7 @@ export default function AttendanceHomeScreen() {
               <View style={styles.tableCell}>
                 <TouchableOpacity
                   onPress={() => {
-                    console.log(
-                      "Navigating to SelectVGAttendanceScreen, xVGid:",
-                      xVGid
-                    );
-                    navigation.navigate("SelectVGAttendanceScreen"); // Navigate to SelectVGAttendanceScreen
+                    navigation.navigate("AttendanceSubmitScreen"); // Navigate to AttendanceSubmitScreen
                   }}
                   style={{ width: "100%", height: "100%" }}
                 >

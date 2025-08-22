@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_KEY, SHEET_ID, CLIENT_KEY } from "./config"; // <-- Import CLIENT_KEY as well
+import { API_KEY, SHEET_ID, CLIENT_KEY, VCF_CENTER } from "./config"; // <-- Import VCF_CENTERid
 
 export let xUserID = ""; // <-- Universal variable
 
@@ -62,6 +62,8 @@ export default function LoginScreen() {
           source={require("./assets/VictoryLogo_Blue.png")}
           style={styles.logo}
         />
+        {/* Show VCF_CENTER right under the logo */}
+        <Text style={styles.centerText}>{VCF_CENTER}</Text>
         <Text style={styles.headerText}>Victory</Text>
       </View>
       <View style={styles.segment}>
@@ -117,7 +119,7 @@ export default function LoginScreen() {
                 if (found) {
                   xUserID = username;
                   await AsyncStorage.setItem("lastUsername", username); // <-- Remember username
-                  navigation.navigate("AttendanceHomeScreen", {
+                  navigation.navigate("SelectVGAttendanceScreen", {
                     userId: username,
                   });
                 } else {
@@ -290,5 +292,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#ccc",
+  },
+  centerText: {
+    color: "#22336B",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 2,
+    marginTop: 4,
+    letterSpacing: 1,
+    textAlign: "center",
   },
 });
