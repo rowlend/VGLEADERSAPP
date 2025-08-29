@@ -388,6 +388,23 @@ export default function AttendanceSubmitScreen() {
               Victory Group #:{" "}
               <Text style={{ fontWeight: "bold" }}>{xVGid}</Text>
             </Text>
+            <Text
+              style={[
+                styles.leaderId,
+                {
+                  fontSize: 16,
+                  textAlign: "left",
+                  width: "100%",
+                  lineHeight: 20,
+                  marginBottom: 0,
+                },
+              ]}
+              numberOfLines={1}
+              adjustsFontSizeToFit={false}
+            >
+              Victory Group:{" "}
+              <Text style={{ fontWeight: "bold" }}>{xVGName}</Text>
+            </Text>
           </View>
         </View>
         {/* Body section in a ScrollView, now flex: 1 for independent scrolling */}
