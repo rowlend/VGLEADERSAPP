@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Alert,
+  TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
@@ -40,6 +41,8 @@ export default function AttendanceSubmitScreen() {
   const [date, setDate] = React.useState(new Date());
   const [showDatePicker, setShowDatePicker] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [comments, setComments] = useState("");
+  const [threeDigit, setThreeDigit] = useState("");
 
   React.useEffect(() => {
     const fetchTable = async () => {
@@ -108,7 +111,6 @@ export default function AttendanceSubmitScreen() {
     columnD: row[3], // Last Name
   }));
   const selectedVG = { name: xVGid, description: xVGName };
-  const comments = ""; // Add a comments state if you want
 
   const handleSubmitAttendance = async () => {
     if (isSubmitting) {
@@ -276,6 +278,8 @@ export default function AttendanceSubmitScreen() {
       setIsSubmitting(false);
     }
   };
+
+  const [countChecked, setCountChecked] = useState(false);
 
   return (
     <>
@@ -472,7 +476,97 @@ export default function AttendanceSubmitScreen() {
               ))
             )}
           </ScrollView>
-          {/* Submit button below the table */}
+          {/* Comments section is now above the submit button */}
+          <View
+            style={{
+              width: "100%",
+              alignItems: "flex-start",
+              paddingHorizontal: 24,
+              marginBottom: 12,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 4,
+                width: "100%",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#22336B",
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  marginRight: 8,
+                }}
+              >
+                Comments:
+              </Text>
+              <View style={{ flex: 1 }} />
+              {/* Label for the checkbox */}
+              <Text style={{ color: "#22336B", fontSize: 16, marginRight: 4 }}>
+                Count:
+              </Text>
+              <TouchableOpacity
+                onPress={() => setCountChecked((prev) => !prev)}
+                style={{
+                  marginRight: 8,
+                  width: 32,
+                  height: 32,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text style={{ fontSize: 22, color: "#22336B" }}>
+                  {countChecked ? "\u2611" : "\u2610"}
+                </Text>
+              </TouchableOpacity>
+              <TextInput
+                style={{
+                  width: 48,
+                  height: 36,
+                  borderColor: "#ccc",
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  padding: 8,
+                  fontSize: 16,
+                  backgroundColor: countChecked ? "#fff" : "#eee", // visually indicate disabled
+                  marginLeft: 4,
+                  textAlign: "center",
+                }}
+                placeholder="000"
+                placeholderTextColor="#aaa"
+                value={threeDigit}
+                onChangeText={(text) => {
+                  // Only allow up to 3 digits, numbers only
+                  if (/^\d{0,3}$/.test(text)) setThreeDigit(text);
+                }}
+                keyboardType="numeric"
+                maxLength={3}
+                editable={countChecked} // <-- disables input when unchecked
+              />
+            </View>
+            <TextInput
+              style={{
+                width: "100%",
+                minHeight: 40,
+                borderColor: "#ccc",
+                borderWidth: 1,
+                borderRadius: 8,
+                padding: 8,
+                fontSize: 16,
+                backgroundColor: "#fff",
+                marginBottom: 4,
+              }}
+              placeholder="Enter comments here..."
+              placeholderTextColor="#aaa"
+              value={comments}
+              onChangeText={setComments}
+              multiline
+            />
+          </View>
+          {/* Submit button is now below the comments section */}
           <View style={{ width: "100%", alignItems: "center", marginTop: 8 }}>
             {isSubmitting ? (
               <View
