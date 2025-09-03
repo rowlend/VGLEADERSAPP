@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "vgleadersapp",
+    "name": "vLeadersApp",
     "slug": "vgleadersapp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.rowexpo.vgleadersapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

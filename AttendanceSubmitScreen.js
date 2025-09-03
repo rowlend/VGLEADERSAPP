@@ -19,6 +19,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 
 const GOOGLE_APPS_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbyLb35nlolWLPVkD3JXkJWAvH_z0insx-PovEwEL5yyP6RLe13UDFGkZeWSlCdmzSMQ/exec";
+const GOOGLE_APPS_SCRIPT_REMARKS_URL =
+  "https://script.google.com/macros/s/AKfycbxexjddlglhI5fTkdvjTQi-1KVK-5ZeiX6OEvdQjCv_d1-riom95u78i80fRoN2N7qF/exec";
 
 const generateRecordID = () => {
   return "CPAPPREC" + new Date().getTime().toString();
@@ -216,16 +218,6 @@ export default function AttendanceSubmitScreen() {
         timestamp,
       }));
 
-      const commentsRecord = comments.trim()
-        ? {
-            recordID,
-            vgGroupID: selectedVG?.name || "",
-            comments: comments.trim(),
-            date: attendanceDate,
-            timestamp,
-          }
-        : null;
-
       // Send to Google Apps Script
       const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: "POST",
@@ -234,13 +226,57 @@ export default function AttendanceSubmitScreen() {
         },
         body: JSON.stringify({
           records: records,
-          commentsRecord: commentsRecord,
         }),
       });
 
       if (response.ok) {
         const responseData = await response.json();
         if (responseData.success) {
+          // After successful VGAttendance submission, submit to VGAttendanceRemarks
+          // Prepare data for VGAttendanceRemarks
+          const remarksPayload = {
+            recordID,
+            selectedVG: selectedVG?.name || "",
+            comments: comments.trim(),
+            attendanceDate,
+            countChecked: countChecked ? threeDigit || "0" : "0",
+            formatDateMMDDYYYY: `${formatDateMMDDYYYY(now)} ${now
+              .getHours()
+              .toString()
+              .padStart(2, "0")}:${now
+              .getMinutes()
+              .toString()
+              .padStart(2, "0")}:${now
+              .getSeconds()
+              .toString()
+              .padStart(2, "0")}`, // <-- now includes time
+          };
+
+          try {
+            const remarksResponse = await fetch(
+              GOOGLE_APPS_SCRIPT_REMARKS_URL,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(remarksPayload),
+              }
+            );
+
+            if (!remarksResponse.ok) {
+              Alert.alert(
+                "Warning",
+                "Attendance was submitted, but remarks could not be saved."
+              );
+            }
+          } catch (err) {
+            Alert.alert(
+              "Warning",
+              "Attendance was submitted, but remarks could not be saved (network error)."
+            );
+          }
+
           Alert.alert(
             "Success",
             `Attendance submitted successfully!\n${attendanceRecords.length} members recorded.`,
