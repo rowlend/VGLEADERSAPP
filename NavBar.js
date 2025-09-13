@@ -20,17 +20,17 @@ export default function NavBar() {
           />
           <Text style={styles.navLabelHome}>home</Text>
         </TouchableOpacity>
-        {/* Nav 2: Bible */}
+        {/* Nav 2: evangelism tools */}
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() => navigation.navigate("BestNews")}
+          onPress={() => navigation.navigate("EvangelismHomeScreen")}
         >
           <Image
-            source={require("./assets/bestnews.png")}
+            source={require("./assets/evangelism.png")}
             style={styles.navIconLarge}
             resizeMode="contain"
           />
-          <Text style={styles.navLabelBible}>Best News Ever </Text>
+          <Text style={styles.navLabelBible}>evangelism</Text>
         </TouchableOpacity>
         {/* Nav 3: Events */}
         <TouchableOpacity

@@ -8,6 +8,7 @@ import AttendanceLogsScreen from "./AttendanceLogsScreen";
 import AttendanceSubmitScreen from "./AttendanceSubmitScreen"; // Make sure this exists
 import AttendanceAddMemberScreen from "./AttendanceAddMemberScreen";
 import SelectVGAttendanceScreen from "./SelectVGAttendanceScreen";
+import EvangelismHomeScreen from "./EvangelismHomeScreen"; // Add this import
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,11 @@ export default function App() {
           name="SelectVGAttendanceScreen"
           component={SelectVGAttendanceScreen}
           options={{ title: "Select Victory Group" }}
+        />
+        <Stack.Screen
+          name="EvangelismHomeScreen"
+          component={EvangelismHomeScreen}
+          options={{ title: "Evangelism Tools" }}
         />
       </Stack.Navigator>
     </NavigationContainer>
