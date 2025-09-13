@@ -23,14 +23,14 @@ export default function NavBar() {
         {/* Nav 2: Bible */}
         <TouchableOpacity
           style={styles.navButton}
-          onPress={() => navigation.navigate("Bible")}
+          onPress={() => navigation.navigate("BestNews")}
         >
           <Image
-            source={require("./assets/bible.png")}
+            source={require("./assets/bestnews.png")}
             style={styles.navIconLarge}
             resizeMode="contain"
           />
-          <Text style={styles.navLabelBible}>bible</Text>
+          <Text style={styles.navLabelBible}>Best News Ever </Text>
         </TouchableOpacity>
         {/* Nav 3: Events */}
         <TouchableOpacity

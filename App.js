@@ -44,7 +44,7 @@ export default function App() {
         <Stack.Screen
           name="AttendanceAddMemberScreen"
           component={AttendanceAddMemberScreen}
-          options={{ title: "Add VG Member" }}
+          options={{ title: "Add VG Member Request" }}
         />
         <Stack.Screen
           name="SelectVGAttendanceScreen"
