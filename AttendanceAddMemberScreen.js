@@ -75,6 +75,7 @@ export default function AttendanceSubmitScreen() {
   const [demographics, setDemographics] = useState(""); // Add a state for demographics
   // Add this state to hold demographics options:
   const [demographicsOptions, setDemographicsOptions] = useState([]);
+  const [socialMediaAccounts, setSocialMediaAccounts] = useState(""); // Add a state for social media accounts
 
   React.useEffect(() => {
     console.log("xVGid on load:", xVGid); // Log the value of xVGid on load
@@ -563,6 +564,45 @@ export default function AttendanceSubmitScreen() {
             </View>
             <View
               style={{
+                flexDirection: "row",
+                width: "100%",
+                paddingHorizontal: 24,
+                marginBottom: 12,
+              }}
+            >
+              <View style={{ flex: 1, marginRight: 8 }}>
+                <Text
+                  style={{
+                    color: "#22336B",
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    marginBottom: 4,
+                  }}
+                >
+                  Mobile #:
+                </Text>
+                <TextInput
+                  style={{
+                    width: "100%",
+                    minHeight: 40,
+                    borderColor: "#ccc",
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    padding: 8,
+                    fontSize: 16,
+                    backgroundColor: "#fff",
+                    marginBottom: 4,
+                  }}
+                  placeholder="Enter mobile number..."
+                  placeholderTextColor="#aaa"
+                  value={mobileNumber}
+                  onChangeText={setMobileNumber}
+                  keyboardType="phone-pad"
+                />
+              </View>
+            </View>
+            <View
+              style={{
                 width: "100%",
                 alignItems: "flex-start",
                 paddingHorizontal: 24,
@@ -575,9 +615,10 @@ export default function AttendanceSubmitScreen() {
                   fontSize: 16,
                   fontWeight: "bold",
                   marginBottom: 4,
+                  marginTop: 8,
                 }}
               >
-                Mobile #:
+                Social Media Accounts:
               </Text>
               <TextInput
                 style={{
@@ -591,11 +632,10 @@ export default function AttendanceSubmitScreen() {
                   backgroundColor: "#fff",
                   marginBottom: 4,
                 }}
-                placeholder="Enter mobile number..."
+                placeholder="Enter social media accounts..."
                 placeholderTextColor="#aaa"
-                value={mobileNumber}
-                onChangeText={setMobileNumber}
-                keyboardType="phone-pad"
+                value={socialMediaAccounts}
+                onChangeText={setSocialMediaAccounts}
               />
             </View>
             <View
@@ -633,14 +673,16 @@ export default function AttendanceSubmitScreen() {
                   onValueChange={(itemValue) => setGender(itemValue)}
                   style={{
                     width: "100%",
-                    height: 50, // slightly larger for visibility
-                    fontSize: 18, // larger font for full text
+                    height: Platform.OS === "ios" ? 200 : 60, // iOS: 200, Android: 60
+                    fontSize: 18,
                     color: "#22336B",
                     backgroundColor: "#fff",
+                    textAlign: "center",
                   }}
                   itemStyle={{
-                    fontSize: 18, // ensures Picker.Item text is large
+                    fontSize: 18,
                     color: "#22336B",
+                    textAlign: "center",
                   }}
                   mode={Platform.OS === "ios" ? "dialog" : "dropdown"}
                 >
@@ -685,14 +727,16 @@ export default function AttendanceSubmitScreen() {
                   onValueChange={(itemValue) => setCivilStatus(itemValue)}
                   style={{
                     width: "100%",
-                    height: 50,
+                    height: Platform.OS === "ios" ? 200 : 60, // iOS: 200, Android: 60
                     fontSize: 18,
                     color: "#22336B",
                     backgroundColor: "#fff",
+                    textAlign: "center",
                   }}
                   itemStyle={{
                     fontSize: 18,
                     color: "#22336B",
+                    textAlign: "center",
                   }}
                   mode={Platform.OS === "ios" ? "dialog" : "dropdown"}
                 >
@@ -739,16 +783,18 @@ export default function AttendanceSubmitScreen() {
                   onValueChange={(itemValue) => setDemographics(itemValue)}
                   style={{
                     width: "100%",
-                    height: 50,
+                    height: Platform.OS === "ios" ? 200 : 60, // iOS: 200, Android: 60
                     fontSize: 18,
                     color: "#22336B",
                     backgroundColor: "#fff",
+                    textAlign: "center",
                   }}
                   itemStyle={{
                     fontSize: 18,
                     color: "#22336B",
+                    textAlign: "center",
                   }}
-                  mode="dropdown" // <-- Always use dropdown mode
+                  mode="dropdown"
                 >
                   <Picker.Item label="Select demographics..." value="" />
                   {demographicsOptions.map((option, idx) => (
@@ -757,6 +803,31 @@ export default function AttendanceSubmitScreen() {
                 </Picker>
               </View>
             </View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#22336B",
+                borderRadius: 8,
+                paddingVertical: 14,
+                width: "100%",
+                alignItems: "center",
+                marginTop: 8,
+                marginBottom: 16,
+                maxWidth: 340,
+                alignSelf: "center",
+              }}
+              onPress={handleSubmitAttendance}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <Text
+                  style={{ color: "#fff", fontSize: 18, fontWeight: "bold" }}
+                >
+                  Submit
+                </Text>
+              )}
+            </TouchableOpacity>
           </ScrollView>
         </View>
       </SafeAreaView>
